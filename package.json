@@ -16,32 +16,14 @@
   "author": "Zheeeng",
   "license": "MIT",
   "scripts": {
-    "prebuild": "rm -rf dist",
-    "dev": "rollup -w -c ./config/rollup.config.js",
-    "build": "npm run build:esm && npm run build:es2015 && npm run build:umd",
-    "build:es2015": "tsc -p ./config/tsconfig.es2015.json",
-    "build:esm": "tsc -p ./config/tsconfig.esm.json",
-    "build:umd": "rollup -c ./config/rollup.config.js",
-    "test": "npm run test:lint && npm run test:spec",
-    "test:spec": "jest",
-    "test:update": "jest --updateSnapshot",
-    "test:lint": "tslint -p ./tsconfig.json",
-    "test:manual": "npm test && npm run build && open example/index.html",
-    "precommit": "npm test",
-    "prepush": "npm test",
-    "prepublishOnly": "npm run build",
-    "release": "npm version patch && npm publish"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "src",
-    "dist",
-    "example"
+    "src"
   ],
   "exports": {
     ".": {
-      "require": "./dist/umd/index.js",
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/esm/index.js"
+      "default": "./src/index.js"
     },
     "./package.json": "./package.json"
   },
