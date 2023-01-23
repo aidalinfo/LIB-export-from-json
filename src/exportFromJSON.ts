@@ -1,5 +1,5 @@
 import { assert, isArray, normalizeFileName } from './utils.js'
-import { downloadFile } from './processors.js'
+import { downloadFile, generateDataURI } from './processors.js'
 import { _prepareData, _createJSONData, createCSVData, createXLSData, createXMLData, _createFieldsMapper } from './converters.js'
 import { exportTypes, ExportType } from './types.js'
 export interface IOption<R = void> {
@@ -11,6 +11,7 @@ export interface IOption<R = void> {
   exportType?: ExportType
   replacer?: ((key: string, value: any) => any) | Array<number | string> | null
   space?: string | number
+  fileWithoutDownload?: boolean
   processor?: (content: string, type: ExportType, fileName: string) => R
   withBOM?: boolean
   beforeTableEncode?: (
@@ -27,6 +28,7 @@ function exportFromJSON<R = void> ({
   exportType = 'txt',
   replacer = null,
   space = 4,
+  fileWithoutDownload = false,
   processor = downloadFile as any,
   withBOM = false,
   beforeTableEncode = (i) => i,
@@ -34,6 +36,8 @@ function exportFromJSON<R = void> ({
   const MESSAGE_IS_ARRAY_FAIL = 'Invalid export data. Please provide an array of objects'
   const MESSAGE_UNKNOWN_EXPORT_TYPE = `Can't export unknown data type ${exportType}.`
   const MESSAGE_FIELD_INVALID = `Can't export string data to ${exportType}.`
+
+  fileWithoutDownload ? processor = generateDataURI as any : null;
 
   if (typeof data === 'string') {
     switch (exportType) {
